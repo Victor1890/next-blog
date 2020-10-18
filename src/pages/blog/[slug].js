@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import MD from "react-markdown";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -9,10 +10,17 @@ const Post = ({ contents, data }) => {
   return (
     <Fragment>
       <Header title={data.title} description={data.description} />
-      <div
-        className="container mx-auto px-4"
-        dangerouslySetInnerHTML={{ __html: contents }}
-      />
+      <div className="grid grid-cols-2 gap-2">
+        <div className="mx-auto">
+          <article
+            className="container px-4 py-2 m-2"
+            dangerouslySetInnerHTML={{ __html: contents }}
+          />
+
+          {/* <MD source={contents} /> */}
+          <div className="container"></div>
+        </div>
+      </div>
     </Fragment>
   );
 };
@@ -22,7 +30,7 @@ export const getStaticPaths = async () => {
   console.log(files);
   const paths = files.map((filename) => ({
     params: {
-      slug: filename.replace(".md", ""),
+      slug: filename.replace(".md", "").replace(" ", "-"),
     },
   }));
   console.log("paths: ", paths);
